@@ -1,0 +1,39 @@
+# ── Maven build output ──────────────────────────────────────────────────────
+target/
+*.class
+
+# ── Compiled/packaged artifacts ──────────────────────────────────────────────
+*.war
+*.jar
+*.ear
+
+# ── Database credentials (NEVER commit passwords) ────────────────────────────
+src/main/resources/db.properties
+
+# ── IDE files ────────────────────────────────────────────────────────────────
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.sts4-cache/
+
+# VS Code
+.vscode/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+
+# ── OS junk ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
