@@ -3,6 +3,7 @@ package com.steermate.service;
 import com.steermate.dao.DriverDAO;
 import com.steermate.dao.TripDAO;
 import com.steermate.dao.UserDAO;
+import com.steermate.model.DriverProfile;
 import com.steermate.model.Trip;
 
 import java.sql.SQLException;
@@ -82,5 +83,21 @@ public class TripService {
 
     public double getDriverEarningsToday(int driverId) throws SQLException {
         return tripDAO.driverEarningsToday(driverId);
+    }
+
+    public Map<String, Integer> getTripStatusBreakdown() throws SQLException {
+        return tripDAO.countByStatus();
+    }
+
+    public List<DriverProfile> getTopDrivers(int limit) throws SQLException {
+        return tripDAO.topDrivers(limit);
+    }
+
+    public Map<String, Integer> getVehicleTypeBreakdown() throws SQLException {
+        return tripDAO.vehicleTypeBreakdown();
+    }
+
+    public List<String[]> getRevenueLastNDays(int n) throws SQLException {
+        return tripDAO.revenueLastNDays(n);
     }
 }

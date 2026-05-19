@@ -21,6 +21,9 @@
     <a href="${pageContext.request.contextPath}/owner/dashboard" class="nav-link active">Dashboard</a>
     <a href="${pageContext.request.contextPath}/owner/book"      class="nav-link">Book a Driver</a>
     <a href="${pageContext.request.contextPath}/owner/trips"     class="nav-link">My Trips</a>
+    <a href="${pageContext.request.contextPath}/owner/search"    class="nav-link">Search Drivers</a>
+    <a href="${pageContext.request.contextPath}/owner/wishlist"  class="nav-link">Wishlist</a>
+    <a href="${pageContext.request.contextPath}/owner/profile"   class="nav-link">Profile</a>
   </div>
   <div class="navbar-user">
     <div class="nav-avatar nav-avatar-owner">${fn:substring(sessionScope.loggedUser.name,0,1)}</div>

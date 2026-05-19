@@ -1,11 +1,12 @@
 package com.steermate.dao;
 
+import com.steermate.model.DriverProfile;
 import com.steermate.model.Trip;
 import com.steermate.util.DBUtil;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.LinkedHashMap;
 
 public class TripDAO {
 
@@ -189,6 +190,102 @@ public class TripDAO {
             ps.setInt(1, driverId);
             rs = ps.executeQuery();
             return rs.next() ? rs.getDouble(1) : 0.0;
+        } finally {
+            DBUtil.close(conn, ps, rs);
+        }
+    }
+
+    public Map<String, Integer> countByStatus() throws SQLException {
+        String sql = "SELECT trip_status, COUNT(*) AS cnt FROM trips GROUP BY trip_status";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) result.put(rs.getString("trip_status"), rs.getInt("cnt"));
+            return result;
+        } finally {
+            DBUtil.close(conn, ps, rs);
+        }
+    }
+
+    public List<DriverProfile> topDrivers(int limit) throws SQLException {
+        String sql = "SELECT dp.*, u.name AS driver_name, u.email AS driver_email, u.phone AS driver_phone " +
+                     "FROM driver_profiles dp JOIN users u ON dp.user_id = u.id " +
+                     "WHERE dp.status = 'APPROVED' ORDER BY dp.total_trips DESC LIMIT ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<DriverProfile> list = new ArrayList<>();
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, limit);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                DriverProfile dp = new DriverProfile();
+                dp.setId(rs.getInt("id"));
+                dp.setUserId(rs.getInt("user_id"));
+                dp.setLicenseNumber(rs.getString("license_number"));
+                dp.setExperienceYears(rs.getInt("experience_years"));
+                dp.setBio(rs.getString("bio"));
+                dp.setRating(rs.getDouble("rating"));
+                dp.setTotalTrips(rs.getInt("total_trips"));
+                dp.setStatus(DriverProfile.Status.valueOf(rs.getString("status")));
+                dp.setDriverName(rs.getString("driver_name"));
+                dp.setDriverEmail(rs.getString("driver_email"));
+                dp.setDriverPhone(rs.getString("driver_phone"));
+                list.add(dp);
+            }
+            return list;
+        } finally {
+            DBUtil.close(conn, ps, rs);
+        }
+    }
+
+    public Map<String, Integer> vehicleTypeBreakdown() throws SQLException {
+        String sql = "SELECT v.vehicle_type, COUNT(t.id) AS cnt FROM vehicles v " +
+                     "LEFT JOIN trips t ON v.id = t.vehicle_id GROUP BY v.vehicle_type ORDER BY cnt DESC";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) result.put(rs.getString("vehicle_type"), rs.getInt("cnt"));
+            return result;
+        } finally {
+            DBUtil.close(conn, ps, rs);
+        }
+    }
+
+    public List<String[]> revenueLastNDays(int n) throws SQLException {
+        String sql = "SELECT DATE(completed_at) AS trip_date, COALESCE(SUM(total_fare), 0) AS revenue, COUNT(*) AS cnt " +
+                     "FROM trips WHERE trip_status = 'COMPLETED' " +
+                     "AND completed_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY) " +
+                     "GROUP BY DATE(completed_at) ORDER BY trip_date ASC";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<String[]> list = new ArrayList<>();
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, n);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new String[]{
+                    rs.getString("trip_date"),
+                    String.format("%.2f", rs.getDouble("revenue")),
+                    String.valueOf(rs.getInt("cnt"))
+                });
+            }
+            return list;
         } finally {
             DBUtil.close(conn, ps, rs);
         }

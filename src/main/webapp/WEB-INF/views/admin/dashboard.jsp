@@ -19,9 +19,10 @@
   </div>
   <div class="navbar-nav">
     <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link active">Dashboard</a>
-    <a href="${pageContext.request.contextPath}/admin/users"    class="nav-link">Users</a>
-    <a href="${pageContext.request.contextPath}/admin/drivers"  class="nav-link">Drivers</a>
-    <a href="${pageContext.request.contextPath}/admin/trips"    class="nav-link">Trips</a>
+    <a href="${pageContext.request.contextPath}/admin/users"     class="nav-link">Users</a>
+    <a href="${pageContext.request.contextPath}/admin/drivers"   class="nav-link">Drivers</a>
+    <a href="${pageContext.request.contextPath}/admin/trips"     class="nav-link">Trips</a>
+    <a href="${pageContext.request.contextPath}/admin/reports"   class="nav-link">Reports</a>
   </div>
   <div class="navbar-user">
     <div class="nav-avatar nav-avatar-admin">${fn:substring(sessionScope.loggedUser.name,0,1)}</div>

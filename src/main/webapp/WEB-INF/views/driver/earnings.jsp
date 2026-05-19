@@ -20,6 +20,7 @@
   <div class="navbar-nav">
     <a href="${pageContext.request.contextPath}/driver/dashboard" class="nav-link">Dashboard</a>
     <a href="${pageContext.request.contextPath}/driver/earnings"  class="nav-link active">Earnings</a>
+    <a href="${pageContext.request.contextPath}/driver/profile"   class="nav-link">Profile</a>
   </div>
   <div class="navbar-user">
     <div class="nav-avatar nav-avatar-driver">${fn:substring(sessionScope.loggedUser.name,0,1)}</div>

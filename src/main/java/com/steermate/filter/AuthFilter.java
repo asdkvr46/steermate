@@ -55,6 +55,8 @@ public class AuthFilter implements Filter {
     private boolean isPublic(String path) {
         return path.equals("/login")
             || path.equals("/register")
+            || path.equals("/about")
+            || path.equals("/contact")
             || path.startsWith("/css/")
             || path.startsWith("/js/")
             || path.startsWith("/images/")

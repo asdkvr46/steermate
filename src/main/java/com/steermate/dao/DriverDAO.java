@@ -111,6 +111,22 @@ public class DriverDAO {
         }
     }
 
+    public void updateProfile(int userId, String bio, int experienceYears) throws SQLException {
+        String sql = "UPDATE driver_profiles SET bio = ?, experience_years = ? WHERE user_id = ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, bio);
+            ps.setInt(2, experienceYears);
+            ps.setInt(3, userId);
+            ps.executeUpdate();
+        } finally {
+            DBUtil.close(conn, ps);
+        }
+    }
+
     public void updateRating(int userId, double rating) throws SQLException {
         String sql = "UPDATE driver_profiles SET rating = ?, total_trips = total_trips + 1 WHERE user_id = ?";
         Connection conn = null;

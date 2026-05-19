@@ -52,4 +52,12 @@ public class UserService {
     public DriverProfile getDriverProfile(int userId) throws SQLException {
         return driverDAO.findByUserId(userId);
     }
+
+    public void updateUserProfile(int id, String name, String phone) throws SQLException {
+        userDAO.updateProfile(id, name, phone);
+    }
+
+    public void updateDriverProfile(int userId, String bio, int experienceYears) throws SQLException {
+        driverDAO.updateProfile(userId, bio, experienceYears);
+    }
 }

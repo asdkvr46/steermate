@@ -10,6 +10,11 @@
 </head>
 <body class="auth-body">
 
+<nav class="auth-topbar">
+  <a href="${pageContext.request.contextPath}/about"    class="auth-topbar-link">About</a>
+  <a href="${pageContext.request.contextPath}/contact"  class="auth-topbar-link">Contact</a>
+</nav>
+
 <div class="auth-container">
   <div class="auth-card auth-card-wide">
     <div class="auth-logo">

@@ -128,6 +128,22 @@ public class UserDAO {
         }
     }
 
+    public void updateProfile(int id, String name, String phone) throws SQLException {
+        String sql = "UPDATE users SET name = ?, phone = ? WHERE id = ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = DBUtil.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, phone);
+            ps.setInt(3, id);
+            ps.executeUpdate();
+        } finally {
+            DBUtil.close(conn, ps);
+        }
+    }
+
     public boolean emailExists(String email) throws SQLException {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
         Connection conn = null;

@@ -41,6 +41,14 @@ public class AdminServlet extends HttpServlet {
                     req.setAttribute("trips", tripService.getAllTrips());
                     forward(req, resp, "admin/trips.jsp");
                 }
+                case "/reports" -> {
+                    req.setAttribute("stats",              tripService.getAdminStats());
+                    req.setAttribute("statusBreakdown",    tripService.getTripStatusBreakdown());
+                    req.setAttribute("topDrivers",         tripService.getTopDrivers(5));
+                    req.setAttribute("vehicleBreakdown",   tripService.getVehicleTypeBreakdown());
+                    req.setAttribute("revenueLastNDays",   tripService.getRevenueLastNDays(7));
+                    forward(req, resp, "admin/reports.jsp");
+                }
                 default -> resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
             }
         } catch (SQLException e) {
